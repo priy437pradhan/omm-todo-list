@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shared To-Do List</title>
+  <style>
+    /* Basic CSS for demo purposes */
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+#taskInput {
+  width: 70%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3c78d8;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+button.done {
+  background-color: #65cc52;
+}
+
+button.done:hover {
+  background-color: #4fa537;
+}
+
+button.remove {
+  background-color: #d9534f;
+}
+
+button.remove:hover {
+  background-color: #c9302c;
+}
+
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shared To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Enter a task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="tasks" class="task-list"></ul>
+      </div>
+  <script>
+    let tasks = [];
+
+    function addTask() {
+      const taskInput = document.getElementById("taskInput");
+      const taskText = taskInput.value;
+      if (taskText !== "") {
+        tasks.push({ text: taskText, completed: false });
+        updateTasks();
+        taskInput.value = "";
+      }
+    }
+
+    function removeTask(index) {
+      tasks.splice(index, 1);
+      updateTasks();
+    }
+
+    function toggleTask(index) {
+      tasks[index].completed = !tasks[index].completed;
+      updateTasks();
+    }
+
+    function updateTasks() {
+      const tasksList = document.getElementById("tasks");
+      tasksList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.innerText = task.text;
+        if (task.completed) {
+          li.classList.add("completed");
+        }
+        const doneButton = document.createElement("button");
+        doneButton.innerText = task.completed ? "Undo" : "Done";
+        doneButton.onclick = () => toggleTask(index);
+        const removeButton = document.createElement("button");
+        removeButton.innerText = "Remove";
+        removeButton.onclick = () => removeTask(index);
+        li.appendChild(doneButton);
+        li.appendChild(removeButton);
+        tasksList.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
